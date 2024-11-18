@@ -7,10 +7,13 @@ def make_trade_decision(price_data, sentiment_score):
     Make a trading decision based on price trends and sentiment analysis.
 
     :param price_data: DataFrame containing stock price data.
-    :param sentiment_score: Sentiment score (-1 to 1) for the stock.
+    :param sentiment_score: Sentiment score (-1 to 1).
     :return: A trade decision ('buy', 'sell', or 'hold').
     """
-    # Example logic: Buy if sentiment is positive and price is rising
+    # Ensure there are at least two rows to compare
+    if len(price_data) < 2:
+        return "hold"
+
     if sentiment_score > 0 and price_data['Close'].iloc[-1] > price_data['Close'].iloc[-2]:
         return "buy"
     elif sentiment_score < 0:
