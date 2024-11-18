@@ -1,8 +1,3 @@
-import pandas as pd
-from trading_bot import make_trade_decision
-from data_retrieval import fetch_data
-from sentiment_analysis import analyze_sentiment
-
 def backtest_strategy(stock_symbol, start_date, end_date):
     """
     Backtest the trading strategy on historical data.
@@ -15,6 +10,9 @@ def backtest_strategy(stock_symbol, start_date, end_date):
     # Fetch historical stock data
     fetch_data(stock_symbol, start_date, end_date)
     price_data = pd.read_csv(f'data/{stock_symbol}_historical_data.csv')
+
+    # Reformat the Date column
+    price_data['Date'] = pd.to_datetime(price_data['Date']).dt.date
 
     # Debugging output
     print("\n--- Debug: DataFrame Columns ---")
@@ -67,13 +65,3 @@ def backtest_strategy(stock_symbol, start_date, end_date):
     results_df.to_csv(f'data/{stock_symbol}_backtest_results.csv', index=False)
     print(f"Backtesting completed. Results saved to data/{stock_symbol}_backtest_results.csv")
     return results_df
-
-
-if __name__ == "__main__":
-    # Define parameters
-    stock_symbol = 'AAPL'
-    start_date = '2020-01-01'
-    end_date = '2023-12-31'
-
-    # Run the backtesting strategy
-    backtest_strategy(stock_symbol, start_date, end_date)
