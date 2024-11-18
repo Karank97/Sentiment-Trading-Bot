@@ -55,7 +55,6 @@ def backtest_strategy(stock_symbol, start_date, end_date):
     print(f"Backtesting completed. Results saved to data/{stock_symbol}_backtest_results.csv")
     return results_df
 
-
 if __name__ == "__main__":
     # Run the backtesting strategy
     backtest_strategy('AAPL', '2020-01-01', '2023-12-31')
