@@ -18,6 +18,14 @@ def fetch_data(stock_symbol, start_date, end_date):
     # Explicitly reformat the Date column
     data['Date'] = pd.to_datetime(data['Date']).dt.strftime('%Y-%m-%d')
 
+    # Debugging output: Check the first few rows of the Date column
+    print("\n--- Debug: First 5 Rows of the Date Column ---")
+    print(data[['Date']].head())
+
+    # Debugging output: Check the data types of all columns
+    print("\n--- Debug: Data Types of the DataFrame ---")
+    print(data.dtypes)
+
     # Save the data to a CSV file
     data.to_csv(f'data/{stock_symbol}_historical_data.csv', index=False)
     print(f"Data for {stock_symbol} saved successfully.")
