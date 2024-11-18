@@ -54,12 +54,7 @@ def backtest_strategy(stock_symbol, start_date, end_date, sentiment_texts):
     return results_df
 
 if __name__ == "__main__":
-    # Example usage
-    example_sentiments = [
-        "Positive news about the market",  # Replace with actual sentiment texts
-        "Neutral news about the market",
-        "Negative news about the market"
-    ] * 100  # Repeat for testing
+    example_sentiments = ["Positive news about the market"] * len(price_data)
 
     backtest_strategy('AAPL', '2020-01-01', '2023-12-31', example_sentiments)
 
