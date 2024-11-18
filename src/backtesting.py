@@ -16,9 +16,17 @@ def backtest_strategy(stock_symbol, start_date, end_date):
     fetch_data(stock_symbol, start_date, end_date)
     price_data = pd.read_csv(f'data/{stock_symbol}_historical_data.csv')
 
-    # Handle the case where price_data is empty
-    if price_data.empty:
-        print(f"No data available for {stock_symbol} between {start_date} and {end_date}.")
+    # Debugging output
+    print("\n--- Debug: DataFrame Columns ---")
+    print(price_data.columns)  # Print column names
+
+    print("\n--- Debug: First 5 Rows of Data ---")
+    print(price_data.head())  # Print the first few rows of the DataFrame
+
+    # Ensure required columns exist
+    required_columns = {'Date', 'Close'}
+    if not required_columns.issubset(price_data.columns):
+        print(f"Error: Missing required columns in price_data. Found columns: {price_data.columns}")
         return
 
     # Generate example sentiments for each day
