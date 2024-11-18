@@ -25,4 +25,10 @@ def fetch_data(stock_symbol, start_date, end_date):
     print(data.dtypes)
 
     # Debugging output: Display the first few rows of the entire DataFrame
-    print("\n--- Debug: First 5 Rows of the Entire DataFrame
+    print("\n--- Debug: First 5 Rows of the Entire DataFrame ---")
+    print(data.head())
+
+    print("Saving the data...")
+    # Save the data to a CSV file
+    data.to_csv(f'data/{stock_symbol}_historical_data.csv', index=False)
+    print(f"Data for {stock_symbol} saved successfully.")
