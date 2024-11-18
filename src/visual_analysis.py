@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Load backtesting results
-results = pd.read_csv('../data/AAPL_backtest_results.csv')
+results = pd.read_csv('/Users/karan/Desktop/PROJECT/Sentiment-Trading-Bot/data/AAPL_backtest_results.csv')
 
 # Plot Balance Over Time
 plt.figure(figsize=(10, 6))
