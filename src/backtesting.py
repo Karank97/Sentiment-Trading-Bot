@@ -16,6 +16,11 @@ def backtest_strategy(stock_symbol, start_date, end_date):
     fetch_data(stock_symbol, start_date, end_date)
     price_data = pd.read_csv(f'data/{stock_symbol}_historical_data.csv')
 
+    # Handle the case where price_data is empty
+    if price_data.empty:
+        print(f"No data available for {stock_symbol} between {start_date} and {end_date}.")
+        return
+
     # Generate example sentiments for each day
     example_sentiments = ["Positive news about the market"] * len(price_data)
 
@@ -55,6 +60,12 @@ def backtest_strategy(stock_symbol, start_date, end_date):
     print(f"Backtesting completed. Results saved to data/{stock_symbol}_backtest_results.csv")
     return results_df
 
+
 if __name__ == "__main__":
+    # Define parameters
+    stock_symbol = 'AAPL'
+    start_date = '2020-01-01'
+    end_date = '2023-12-31'
+
     # Run the backtesting strategy
-    backtest_strategy('AAPL', '2020-01-01', '2023-12-31')
+    backtest_strategy(stock_symbol, start_date, end_date)
