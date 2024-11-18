@@ -62,3 +62,5 @@ if __name__ == "__main__":
     ] * 100  # Repeat for testing
 
     backtest_strategy('AAPL', '2020-01-01', '2023-12-31', example_sentiments)
+
+print(price_data.iloc[:i + 1])
