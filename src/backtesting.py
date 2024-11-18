@@ -3,23 +3,21 @@ from trading_bot import make_trade_decision
 from data_retrieval import fetch_data
 from sentiment_analysis import analyze_sentiment
 
-def backtest_strategy(stock_symbol, start_date, end_date, sentiment_texts=None):
+def backtest_strategy(stock_symbol, start_date, end_date):
     """
     Backtest the trading strategy on historical data.
 
     :param stock_symbol: Stock ticker symbol (e.g., 'AAPL').
     :param start_date: Start date for backtesting (e.g., '2020-01-01').
     :param end_date: End date for backtesting (e.g., '2023-12-31').
-    :param sentiment_texts: List of sentiment texts corresponding to each trading day.
     :return: DataFrame with backtesting results.
     """
     # Fetch historical stock data
     fetch_data(stock_symbol, start_date, end_date)
     price_data = pd.read_csv(f'data/{stock_symbol}_historical_data.csv')
 
-    # Generate example sentiments if none are provided
-    if sentiment_texts is None:
-        sentiment_texts = ["Positive news about the market"] * len(price_data)
+    # Generate example sentiments for each day
+    example_sentiments = ["Positive news about the market"] * len(price_data)
 
     # Initialize variables for backtesting
     results = []
@@ -29,7 +27,7 @@ def backtest_strategy(stock_symbol, start_date, end_date, sentiment_texts=None):
     # Iterate through each day of the price data
     for i in range(len(price_data) - 1):
         # Get the sentiment score for the current day
-        sentiment_score = analyze_sentiment(sentiment_texts[i])
+        sentiment_score = analyze_sentiment(example_sentiments[i])
 
         # Make a trade decision based on price trends and sentiment
         decision = make_trade_decision(price_data.iloc[:i + 1], sentiment_score)
