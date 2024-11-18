@@ -3,11 +3,6 @@ from trading_bot import make_trade_decision
 from data_retrieval import fetch_data
 from sentiment_analysis import analyze_sentiment
 
-import pandas as pd
-from trading_bot import make_trade_decision
-from data_retrieval import fetch_data
-from sentiment_analysis import analyze_sentiment
-
 def backtest_strategy(stock_symbol, start_date, end_date, sentiment_texts=None):
     """
     Backtest the trading strategy on historical data.
