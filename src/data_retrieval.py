@@ -10,9 +10,10 @@ def fetch_data(stock_symbol, start_date, end_date):
     # Reset the index to include the Date column
     data.reset_index(inplace=True)
 
-    # Flatten multi-level columns if they exist
+    # Flatten the columns
     if isinstance(data.columns, pd.MultiIndex):
-        data.columns = [' '.join(col).strip() for col in data.columns]
+        # Combine multi-level column names into a single level
+        data.columns = [col[1] if col[1] else col[0] for col in data.columns]
 
     # Explicitly reformat the Date column
     data['Date'] = pd.to_datetime(data['Date']).dt.strftime('%Y-%m-%d')
