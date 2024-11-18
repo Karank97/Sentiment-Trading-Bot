@@ -10,10 +10,8 @@ def fetch_data(stock_symbol, start_date, end_date):
     # Reset the index to include the Date column
     data.reset_index(inplace=True)
 
-    # Flatten the columns
-    if isinstance(data.columns, pd.MultiIndex):
-        # Combine multi-level column names into a single level
-        data.columns = [col[1] if col[1] else col[0] for col in data.columns]
+    # Assign proper column names
+    data.columns = ['Date', 'Adj Close', 'Close', 'High', 'Low', 'Open', 'Volume']
 
     # Explicitly reformat the Date column
     data['Date'] = pd.to_datetime(data['Date']).dt.strftime('%Y-%m-%d')
@@ -27,10 +25,4 @@ def fetch_data(stock_symbol, start_date, end_date):
     print(data.dtypes)
 
     # Debugging output: Display the first few rows of the entire DataFrame
-    print("\n--- Debug: First 5 Rows of the Entire DataFrame ---")
-    print(data.head())
-
-    print("Saving the data...")
-    # Save the data to a CSV file
-    data.to_csv(f'data/{stock_symbol}_historical_data.csv', index=False)
-    print(f"Data for {stock_symbol} saved successfully.")
+    print("\n--- Debug: First 5 Rows of the Entire DataFrame
