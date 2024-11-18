@@ -1,3 +1,8 @@
+import pandas as pd
+from trading_bot import make_trade_decision
+from data_retrieval import fetch_data
+from sentiment_analysis import analyze_sentiment
+
 def backtest_strategy(stock_symbol, start_date, end_date):
     """
     Backtest the trading strategy on historical data.
@@ -7,19 +12,22 @@ def backtest_strategy(stock_symbol, start_date, end_date):
     :param end_date: End date for backtesting (e.g., '2023-12-31').
     :return: DataFrame with backtesting results.
     """
+    print("Starting backtest strategy...")
+
     # Fetch historical stock data
     fetch_data(stock_symbol, start_date, end_date)
-    price_data = pd.read_csv(f'data/{stock_symbol}_historical_data.csv')
+    price_data_path = f'data/{stock_symbol}_historical_data.csv'
 
-    # Reformat the Date column
-    price_data['Date'] = pd.to_datetime(price_data['Date']).dt.date
+    try:
+        price_data = pd.read_csv(price_data_path)
+        print(f"Price data loaded successfully from {price_data_path}.")
+    except FileNotFoundError:
+        print(f"Error: {price_data_path} not found. Ensure the fetch_data function ran correctly.")
+        return
 
-    # Debugging output
-    print("\n--- Debug: DataFrame Columns ---")
-    print(price_data.columns)  # Print column names
-
-    print("\n--- Debug: First 5 Rows of Data ---")
-    print(price_data.head())  # Print the first few rows of the DataFrame
+    # Debugging output: Show the first few rows of price data
+    print("\n--- Debug: First 5 Rows of Price Data ---")
+    print(price_data.head())
 
     # Ensure required columns exist
     required_columns = {'Date', 'Close'}
@@ -62,6 +70,23 @@ def backtest_strategy(stock_symbol, start_date, end_date):
 
     # Create a results DataFrame
     results_df = pd.DataFrame(results)
-    results_df.to_csv(f'data/{stock_symbol}_backtest_results.csv', index=False)
-    print(f"Backtesting completed. Results saved to data/{stock_symbol}_backtest_results.csv")
+
+    # Debugging output: Show the first few rows of backtesting results
+    print("\n--- Debug: First 5 Rows of Backtest Results ---")
+    print(results_df.head())
+
+    # Save results to CSV
+    results_file_path = f'data/{stock_symbol}_backtest_results.csv'
+    results_df.to_csv(results_file_path, index=False)
+    print(f"Backtesting completed. Results saved to {results_file_path}.")
     return results_df
+
+
+if __name__ == "__main__":
+    # Define parameters
+    stock_symbol = 'AAPL'
+    start_date = '2020-01-01'
+    end_date = '2023-12-31'
+
+    # Run the backtesting strategy
+    backtest_strategy(stock_symbol, start_date, end_date)
