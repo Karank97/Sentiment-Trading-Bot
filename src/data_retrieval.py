@@ -9,10 +9,8 @@ def fetch_data(stock_symbol, start_date, end_date):
     :param end_date: End date for historical data (e.g., '2023-12-31').
     """
     data = yf.download(stock_symbol, start=start_date, end=end_date)
-    # Save data locally (to be downloaded manually)
-    data.to_csv(f'data/{stock_symbol}_historical_data.csv')
-    print(f"Data for {stock_symbol} saved successfully.")
 
-# Example usage
-if __name__ == "__main__":
-    fetch_data('AAPL', '2020-01-01', '2023-12-31')
+    # Ensure the index (dates) is reset as a column
+    data.reset_index(inplace=True)
+    data.to_csv(f'data/{stock_symbol}_historical_data.csv', index=False)
+    print(f"Data for {stock_symbol} saved successfully.")
