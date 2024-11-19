@@ -16,24 +16,32 @@ def fetch_data(stock_symbol, start_date, end_date):
             print(f"No data found for {stock_symbol}. Skipping.")
             return
 
-        # Reset index and flatten multi-level columns
+        # Reset the index and flatten multi-level columns if necessary
         data.reset_index(inplace=True)
-        data.columns = data.columns.map(lambda x: x if isinstance(x, str) else x[1])
+        if isinstance(data.columns, pd.MultiIndex):
+            data.columns = data.columns.get_level_values(1)
 
         # Ensure the Date column exists and is formatted correctly
         if 'Date' not in data.columns:
-            print(f"Error: 'Date' column missing in data for {stock_symbol}.")
-            return
+            data.rename(columns={'index': 'Date'}, inplace=True)
+
         data['Date'] = pd.to_datetime(data['Date']).dt.strftime('%Y-%m-%d')
 
-        # Debugging: Show first 5 rows of cleaned data
+        # Debugging: Check the first 5 rows of cleaned data
         print("\n--- Debug: First 5 Rows of Cleaned Data ---")
-        print(data[['Date', 'Close']].head())
+        print(data.head())
+
+        # Ensure required columns exist
+        required_columns = ['Date', 'Close', 'Open', 'High', 'Low', 'Volume']
+        for col in required_columns:
+            if col not in data.columns:
+                print(f"Error: Missing required column '{col}' in data for {stock_symbol}.")
+                return
 
         # Ensure the data directory exists
         os.makedirs('data', exist_ok=True)
 
-        # Save cleaned data to CSV
+        # Save the cleaned data to a CSV file
         file_path = f'data/{stock_symbol}_historical_data.csv'
         data.to_csv(file_path, index=False)
         print(f"Data for {stock_symbol} saved successfully to {file_path}.\n")
