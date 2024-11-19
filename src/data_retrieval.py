@@ -1,6 +1,7 @@
 import yfinance as yf
 import pandas as pd
 import os
+import traceback
 
 def fetch_data(stock_symbol, start_date, end_date):
     """
@@ -10,11 +11,16 @@ def fetch_data(stock_symbol, start_date, end_date):
 
     try:
         # Download data using yfinance
-        data = yf.download(stock_symbol, start=start_date, end=end_date)
+        data = yf.download(stock_symbol, start=start_date, end=end_date, progress=True)
 
         if data.empty:
             print(f"No data found for {stock_symbol}. Skipping.")
             return
+
+        # Debugging: Show raw data structure
+        print("\n--- Debug: Raw Data ---")
+        print(data.head())
+        print(data.info())
 
         # Flatten multi-level columns
         if isinstance(data.columns, pd.MultiIndex):
@@ -22,12 +28,13 @@ def fetch_data(stock_symbol, start_date, end_date):
 
         # Reset index and ensure the Date column exists
         data.reset_index(inplace=True)
-        data.rename(columns={'index': 'Date'}, inplace=True)
+        if 'Date' not in data.columns:
+            data.rename(columns={'index': 'Date'}, inplace=True)
 
         # Format the Date column
         data['Date'] = pd.to_datetime(data['Date']).dt.strftime('%Y-%m-%d')
 
-        # Debugging: Show first 5 rows of cleaned data
+        # Debugging: Check cleaned data
         print(f"\n--- Debug: First 5 Rows of Cleaned Data for {stock_symbol} ---")
         print(data.head())
 
@@ -47,3 +54,4 @@ def fetch_data(stock_symbol, start_date, end_date):
         print(f"Data for {stock_symbol} saved successfully to {file_path}.\n")
     except Exception as e:
         print(f"Error fetching data for {stock_symbol}: {e}")
+        traceback.print_exc()
