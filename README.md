@@ -13,7 +13,8 @@ A Python-based trading bot that combines sentiment analysis and historical stock
 ---
 
 ## Installation
-
+Install dependencies:
+pip install -r requirements.txt
 ### Prerequisites
 - Python 3.10 or later
 - Virtual environment for dependency management
@@ -41,6 +42,9 @@ A Python-based trading bot that combines sentiment analysis and historical stock
    Generate plots for account balance, stock prices, and trade decisions:
    ```bash
    python src/visual_analysis.py
+3. Real Time Sentiment
+   ```bash
+   python src/real_time_sentiment.py
 Example Visualization
 Balance Over Time
 Stock Price with Buy/Sell Decisions
@@ -58,6 +62,10 @@ Sentiment-Trading-Bot/
 ├── venv/                  # Virtual environment
 ├── requirements.txt       # Project dependencies
 └── README.md              # Project documentation
+
+###Future Enhancements
+Deep learning-based sentiment analysis.
+Integration with live trading APIs for executing trades.
 
 Contact
 Created by Karan Kumar. Feel free to connect on LinkedIn or reach out via email at karan.kumar@rutgers.edu
