@@ -44,4 +44,12 @@ def fetch_data(stock_symbol, start_date, end_date):
                 print(f"Error: Missing required column '{col}' in data for {stock_symbol}.")
                 return
 
-    
+        # Ensure the data directory exists
+        os.makedirs('data', exist_ok=True)
+
+        # Save the cleaned data to a CSV file
+        file_path = f'data/{stock_symbol}_historical_data.csv'
+        data.to_csv(file_path, index=False)
+        print(f"Data for {stock_symbol} saved successfully to {file_path}.\n")
+    except Exception as e:
+        print(f"Error fetching data for {stock_symbol}: {e}")
