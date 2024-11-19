@@ -8,33 +8,37 @@ def fetch_data(stock_symbol, start_date, end_date):
     """
     print(f"Starting data retrieval for {stock_symbol}...")
 
-    # Download data using yfinance
-    data = yf.download(stock_symbol, start=start_date, end=end_date)
+    try:
+        # Download data using yfinance
+        data = yf.download(stock_symbol, start=start_date, end=end_date)
 
-    if data.empty:
-        print(f"No data found for {stock_symbol}. Skipping.")
-        return
+        if data.empty:
+            print(f"No data found for {stock_symbol}. Skipping.")
+            return
 
-    # Reset index and flatten multi-level columns
-    data.reset_index(inplace=True)
-    data.columns = data.columns.map(lambda x: x if isinstance(x, str) else x[1])
+        # Reset index and flatten multi-level columns
+        data.reset_index(inplace=True)
+        data.columns = data.columns.map(lambda x: x if isinstance(x, str) else x[1])
 
-    # Explicitly reformat the Date column
-    data['Date'] = pd.to_datetime(data['Date']).dt.strftime('%Y-%m-%d')
+        # Ensure the Date column exists and is formatted correctly
+        if 'Date' not in data.columns:
+            print(f"Error: 'Date' column missing in data for {stock_symbol}.")
+            return
+        data['Date'] = pd.to_datetime(data['Date']).dt.strftime('%Y-%m-%d')
 
-    # Debugging output
-    print("\n--- Debug: First 5 Rows of Cleaned Data ---")
-    print(data.head())
+        # Debugging: Show first 5 rows of cleaned data
+        print("\n--- Debug: First 5 Rows of Cleaned Data ---")
+        print(data[['Date', 'Close']].head())
 
-    print("\n--- Debug: Data Types of Cleaned Data ---")
-    print(data.dtypes)
+        # Ensure the data directory exists
+        os.makedirs('data', exist_ok=True)
 
-    # Ensure the data directory exists
-    os.makedirs('data', exist_ok=True)
-
-    # Save cleaned data to CSV
-    data.to_csv(f'data/{stock_symbol}_historical_data.csv', index=False)
-    print(f"Data for {stock_symbol} saved successfully.\n")
+        # Save cleaned data to CSV
+        file_path = f'data/{stock_symbol}_historical_data.csv'
+        data.to_csv(file_path, index=False)
+        print(f"Data for {stock_symbol} saved successfully to {file_path}.\n")
+    except Exception as e:
+        print(f"Error fetching data for {stock_symbol}: {e}")
 
 
 def fetch_data_for_tickers(tickers, start_date, end_date):
