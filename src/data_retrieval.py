@@ -15,39 +15,24 @@ def fetch_data(stock_symbol, start_date, end_date):
         print(f"No data found for {stock_symbol}. Skipping.")
         return
 
-    # Reset the index to include the Date column
+    # Reset index and flatten multi-level columns
     data.reset_index(inplace=True)
-
-    # Assign proper column names
-    data.rename(columns={
-        'Adj Close': 'Adj_Close',
-        'Close': 'Close',
-        'High': 'High',
-        'Low': 'Low',
-        'Open': 'Open',
-        'Volume': 'Volume'
-    }, inplace=True)
+    data.columns = data.columns.map(lambda x: x if isinstance(x, str) else x[1])
 
     # Explicitly reformat the Date column
     data['Date'] = pd.to_datetime(data['Date']).dt.strftime('%Y-%m-%d')
 
-    # Debugging output: Check the first few rows of the Date column
-    print("\n--- Debug: First 5 Rows of the Date Column ---")
-    print(data[['Date']].head())
-
-    # Debugging output: Check the data types of all columns
-    print("\n--- Debug: Data Types of the DataFrame ---")
-    print(data.dtypes)
-
-    # Debugging output: Display the first few rows of the entire DataFrame
-    print("\n--- Debug: First 5 Rows of the Entire DataFrame ---")
+    # Debugging output
+    print("\n--- Debug: First 5 Rows of Cleaned Data ---")
     print(data.head())
 
-    print("Saving the data...")
+    print("\n--- Debug: Data Types of Cleaned Data ---")
+    print(data.dtypes)
+
     # Ensure the data directory exists
     os.makedirs('data', exist_ok=True)
 
-    # Save the data to a CSV file
+    # Save cleaned data to CSV
     data.to_csv(f'data/{stock_symbol}_historical_data.csv', index=False)
     print(f"Data for {stock_symbol} saved successfully.\n")
 
