@@ -26,7 +26,13 @@ def fetch_data(stock_symbol, start_date, end_date):
         # Flatten multi-level columns if they exist
         if isinstance(data.columns, pd.MultiIndex):
             print("Flattening multi-level columns...")
-            data.columns = [col[1] if col[1] else col[0] for col in data.columns]
+            data.columns = data.columns.get_level_values(0)
+
+        # Rename columns to standard format
+        expected_columns = ['Adj Close', 'Close', 'High', 'Low', 'Open', 'Volume']
+        column_mapping = {col: col for col in expected_columns}
+        column_mapping.update({'Date': 'Date'})  # Ensure Date remains mapped correctly
+        data.rename(columns=column_mapping, inplace=True)
 
         # Reset index and ensure the Date column exists
         print("Resetting index...")
