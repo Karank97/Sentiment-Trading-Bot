@@ -1,0 +1,5 @@
+yfinance
+vaderSentiment
+pandas
+scikit-learn
+tensorflow
