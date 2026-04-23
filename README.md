@@ -1,72 +1,64 @@
-# Sentiment Trading Bot
+# NashBud MVP
 
-A Python-based trading bot that combines sentiment analysis and historical stock price data to simulate and backtest trading strategies. The bot uses data from Yahoo Finance and provides visualizations for performance evaluation.
+NashBud is a polished MVP web app for adults to discover verified dispensary deals in **Middlesex County, New Jersey**.
 
----
+> NashBud is a deal-discovery platform only. It does **not** support checkout, ordering, payments, or delivery.
 
-## Features
-- **Data Retrieval**: Fetches historical stock price data using the Yahoo Finance API.
-- **Trading Strategy**: Simulates buy/sell/hold decisions based on sentiment and stock price trends.
-- **Backtesting**: Evaluates trading performance over a given time period.
-- **Visualization**: Plots account balance, stock prices, and trade decisions for detailed analysis.
+## Tech Stack
 
----
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS
+- Supabase-ready project structure (currently local mock data)
 
-## Installation
-Install dependencies:
-pip install -r requirements.txt
-### Prerequisites
-- Python 3.10 or later
-- Virtual environment for dependency management
+## Quick Start
 
-### Steps
-1. Clone the repository:
+1. Install dependencies:
    ```bash
-   git clone https://github.com/karank97/Sentiment-Trading-Bot.git
-   cd Sentiment-Trading-Bot
-2. Create and activate a virtual environment:
+   npm install
+   ```
+2. Run development server:
    ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-3. Install the required dependencies:
-   ```bash
-   pip install -r requirements.txt
-### Usage 
-1. Run Backtesting:
-   Fetch historical stock data, simulate trades, and generate results:
-   ```bash
-   python src/backtesting.py
-   The backtesting results will be saved in:
-   data/AAPL_backtest_results.csv
-2. Visualize Results
-   Generate plots for account balance, stock prices, and trade decisions:
-   ```bash
-   python src/visual_analysis.py
-3. Real Time Sentiment
-   ```bash
-   python src/real_time_sentiment.py
-Example Visualization
-Balance Over Time
-Stock Price with Buy/Sell Decisions
+   npm run dev
+   ```
+3. Open `http://localhost:3000`
 
-### Project Structure
-  ```bash
-Sentiment-Trading-Bot/
-├── data/                  # Contains historical and backtesting result CSVs
-├── src/                   # Source code for the bot
-│   ├── backtesting.py     # Backtesting logic
-│   ├── data_retrieval.py  # Data fetching from Yahoo Finance
-│   ├── sentiment_analysis.py  # Sentiment analysis logic
-│   ├── trading_bot.py     # Trade decision logic
-│   ├── visual_analysis.py # Visualization and analysis
-├── venv/                  # Virtual environment
-├── requirements.txt       # Project dependencies
-└── README.md              # Project documentation
+## MVP Pages
 
-###Future Enhancements
-Deep learning-based sentiment analysis.
-Integration with live trading APIs for executing trades.
+- `/` Home page with 21+ age gate, location search, and CTA
+- `/deals` Deals listing with filters and verified/pending status
+- `/dispensary/[slug]` Dispensary profile with active deals and compliance note
+- `/submit` Deal submission form with required-field validation and “Submitted for review” state
+- `/admin` Mock admin review queue with approve/reject/edit buttons and status badges
 
-Contact
-Created by Karan Kumar. Feel free to connect on LinkedIn or reach out via email at karan.kumar@rutgers.edu
+## Core Components
 
+- `components/AgeGate.tsx`
+- `components/DealCard.tsx`
+- `components/FiltersBar.tsx`
+- `components/FooterDisclaimer.tsx`
+- `components/SubmitDealForm.tsx`
+- `components/AdminDealTable.tsx`
+
+## Data + Validation
+
+- Mock dataset: `data/mockDeals.ts` (10 demo deals in Middlesex County, NJ only)
+- Validation utility: `lib/validateDeal.ts`
+  - Validates required deal fields
+  - Enforces `state = NJ` and `county = Middlesex`
+  - Logs developer warnings when invalid entries are detected
+
+## Compliance
+
+Footer disclaimer (shown globally):
+
+> NashBud is an informational deal-discovery platform. We do not sell cannabis, process orders, facilitate delivery, or provide medical advice. Users are responsible for following all New Jersey laws.
+
+## MVP Roadmap
+
+1. Supabase integration for submitted deals and admin moderation state.
+2. Auth for admin reviewers and dispensary submitters.
+3. Verification pipeline with source snapshotting and audit trail.
+4. Geolocation search and distance calculations.
+5. Alerts/watchlists for expiring deals.
+6. Analytics dashboard for partner dispensaries.

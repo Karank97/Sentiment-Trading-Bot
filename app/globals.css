@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-nashbud-bg text-white antialiased;
+}
+
+input,
+select,
+button,
+textarea {
+  @apply outline-none;
+}
+
+.panel {
+  @apply rounded-2xl border border-white/10 bg-nashbud-panel/80 backdrop-blur;
+}
+
+.tag {
+  @apply rounded-full border border-nashbud-accent/40 bg-nashbud-accentSoft px-3 py-1 text-xs font-medium text-green-200;
+}
