@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import './globals.css';
 import FooterDisclaimer from '@/components/FooterDisclaimer';
 
@@ -14,19 +15,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <div className="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 pb-6 pt-4 sm:px-6 lg:px-8">
           <header className="mb-6 flex items-center justify-between py-3">
-            <a href="/" className="text-2xl font-bold tracking-tight text-white">
+            <Link href="/" className="text-2xl font-bold tracking-tight text-white">
               Nash<span className="text-nashbud-accent">Bud</span>
-            </a>
+            </Link>
             <nav className="flex gap-2 text-sm sm:gap-4 sm:text-base">
-              <a href="/deals" className="text-nashbud-muted transition hover:text-white">
+              <Link href="/deals" className="text-nashbud-muted transition hover:text-white">
                 Deals
-              </a>
-              <a href="/submit" className="text-nashbud-muted transition hover:text-white">
+              </Link>
+              <Link href="/submit" className="text-nashbud-muted transition hover:text-white">
                 Submit
-              </a>
-              <a href="/admin" className="text-nashbud-muted transition hover:text-white">
+              </Link>
+              <Link href="/admin" className="text-nashbud-muted transition hover:text-white">
                 Admin
-              </a>
+              </Link>
             </nav>
           </header>
           <main className="flex-1">{children}</main>

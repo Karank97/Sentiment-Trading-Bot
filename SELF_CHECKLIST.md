@@ -4,7 +4,7 @@
 - [x] Every mock deal has an expiration date.
 - [x] Every mock deal has a source URL placeholder.
 - [x] Every page includes the compliance footer disclaimer via shared app layout.
-- [x] 21+ age gate appears before browsing deals (Home + Deals pages).
+- [x] 21+ age gate appears before browsing deals (Home + Deals + Dispensary pages).
 - [x] No checkout/cart/payment/delivery functionality exists in the MVP.
 - [x] Deal cards display verified/pending status badges.
 - [x] Submit form validates required fields.

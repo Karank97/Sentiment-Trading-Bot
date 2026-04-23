@@ -1,5 +1,7 @@
 'use client';
 
+export type FilterKey = 'city' | 'category' | 'discount' | 'expiringSoon' | 'verifiedOnly';
+
 type Props = {
   cities: string[];
   categories: string[];
@@ -8,7 +10,7 @@ type Props = {
   discount: string;
   expiringSoon: boolean;
   verifiedOnly: boolean;
-  onChange: (key: string, value: string | boolean) => void;
+  onChange: (key: FilterKey, value: string | boolean) => void;
 };
 
 export default function FiltersBar(props: Props) {

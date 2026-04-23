@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Deal } from '@/types/deal';
 
 export default function DealCard({ deal }: { deal: Deal }) {
@@ -7,8 +8,12 @@ export default function DealCard({ deal }: { deal: Deal }) {
     <article className="panel p-5 shadow-glow">
       <div className="mb-3 flex items-start justify-between gap-2">
         <div>
-          <p className="text-lg font-semibold">{deal.dispensaryName}</p>
-          <p className="text-sm text-nashbud-muted">{deal.city}, NJ • {deal.distance}</p>
+          <Link href={`/dispensary/${deal.dispensarySlug}`} className="text-lg font-semibold hover:text-green-300">
+            {deal.dispensaryName}
+          </Link>
+          <p className="text-sm text-nashbud-muted">
+            {deal.city}, NJ • {deal.distance}
+          </p>
         </div>
         <span
           className={`rounded-full px-3 py-1 text-xs font-semibold ${

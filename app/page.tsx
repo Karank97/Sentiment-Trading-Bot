@@ -1,6 +1,7 @@
 'use client';
 
 import AgeGate from '@/components/AgeGate';
+import Link from 'next/link';
 import { useState } from 'react';
 
 export default function HomePage() {
@@ -26,12 +27,12 @@ export default function HomePage() {
             placeholder="Search by city or zip code"
             className="w-full rounded-xl border border-white/20 bg-black/20 p-3"
           />
-          <a
+          <Link
             href={`/deals?location=${encodeURIComponent(query)}`}
             className="rounded-xl bg-nashbud-accent px-6 py-3 text-center font-semibold text-black transition hover:brightness-110"
           >
             Find Deals Near Me
-          </a>
+          </Link>
         </div>
       </section>
     </>
