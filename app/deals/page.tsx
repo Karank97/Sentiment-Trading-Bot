@@ -4,7 +4,8 @@ import AgeGate from '@/components/AgeGate';
 import DealCard from '@/components/DealCard';
 import FiltersBar, { FilterKey } from '@/components/FiltersBar';
 import { demoDataNotice, mockDeals } from '@/data/mockDeals';
-import { useMemo, useState } from 'react';
+import { Deal } from '@/types/deal';
+import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 type FilterState = {
@@ -26,16 +27,33 @@ export default function DealsPage() {
     expiringSoon: false,
     verifiedOnly: false,
   });
+  const [deals, setDeals] = useState<Deal[]>(mockDeals);
 
-  const cities = [...new Set(mockDeals.map((deal) => deal.city))];
-  const categories = [...new Set(mockDeals.map((deal) => deal.category))];
+  useEffect(() => {
+    const loadDeals = async () => {
+      try {
+        const response = await fetch('/api/deals');
+        const body = (await response.json()) as { data?: Deal[] };
+        if (response.ok && body.data) {
+          setDeals(body.data);
+        }
+      } catch {
+        setDeals(mockDeals);
+      }
+    };
+
+    void loadDeals();
+  }, []);
+
+  const cities = [...new Set(deals.map((deal) => deal.city))];
+  const categories = [...new Set(deals.map((deal) => deal.category))];
 
   const filtered = useMemo(() => {
     const now = new Date();
     const soon = new Date();
     soon.setDate(now.getDate() + 7);
 
-    return mockDeals.filter((deal) => {
+    return deals.filter((deal) => {
       if (requestedLocation) {
         const normalized = requestedLocation.toLowerCase();
         const cityMatch = deal.city.toLowerCase().includes(normalized);
@@ -52,7 +70,7 @@ export default function DealsPage() {
       }
       return true;
     });
-  }, [filters, requestedLocation]);
+  }, [deals, filters, requestedLocation]);
 
   const handleFilterChange = (key: FilterKey, value: string | boolean) => {
     setFilters((prev) => ({ ...prev, [key]: value } as FilterState));
