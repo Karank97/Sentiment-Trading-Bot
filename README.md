@@ -1,72 +1,84 @@
-# Sentiment Trading Bot
+# NashBud MVP
 
-A Python-based trading bot that combines sentiment analysis and historical stock price data to simulate and backtest trading strategies. The bot uses data from Yahoo Finance and provides visualizations for performance evaluation.
+NashBud is a polished MVP web app for adults to discover verified dispensary deals in **Middlesex County, New Jersey**.
 
----
+> NashBud is a deal-discovery platform only. It does **not** support checkout, ordering, payments, delivery, or medical advice.
 
-## Features
-- **Data Retrieval**: Fetches historical stock price data using the Yahoo Finance API.
-- **Trading Strategy**: Simulates buy/sell/hold decisions based on sentiment and stock price trends.
-- **Backtesting**: Evaluates trading performance over a given time period.
-- **Visualization**: Plots account balance, stock prices, and trade decisions for detailed analysis.
+## Tech Stack
 
----
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS
+- Supabase-ready API/data layer with local mock fallback
 
-## Installation
-Install dependencies:
-pip install -r requirements.txt
-### Prerequisites
-- Python 3.10 or later
-- Virtual environment for dependency management
+## Quick Start
 
-### Steps
-1. Clone the repository:
+1. Install dependencies:
    ```bash
-   git clone https://github.com/karank97/Sentiment-Trading-Bot.git
-   cd Sentiment-Trading-Bot
-2. Create and activate a virtual environment:
+   npm install
+   ```
+2. Run development server:
    ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-3. Install the required dependencies:
-   ```bash
-   pip install -r requirements.txt
-### Usage 
-1. Run Backtesting:
-   Fetch historical stock data, simulate trades, and generate results:
-   ```bash
-   python src/backtesting.py
-   The backtesting results will be saved in:
-   data/AAPL_backtest_results.csv
-2. Visualize Results
-   Generate plots for account balance, stock prices, and trade decisions:
-   ```bash
-   python src/visual_analysis.py
-3. Real Time Sentiment
-   ```bash
-   python src/real_time_sentiment.py
-Example Visualization
-Balance Over Time
-Stock Price with Buy/Sell Decisions
+   npm run dev
+   ```
+3. Open `http://localhost:3000`
 
-### Project Structure
-  ```bash
-Sentiment-Trading-Bot/
-├── data/                  # Contains historical and backtesting result CSVs
-├── src/                   # Source code for the bot
-│   ├── backtesting.py     # Backtesting logic
-│   ├── data_retrieval.py  # Data fetching from Yahoo Finance
-│   ├── sentiment_analysis.py  # Sentiment analysis logic
-│   ├── trading_bot.py     # Trade decision logic
-│   ├── visual_analysis.py # Visualization and analysis
-├── venv/                  # Virtual environment
-├── requirements.txt       # Project dependencies
-└── README.md              # Project documentation
+## Supabase Setup (Backend-Ready)
 
-###Future Enhancements
-Deep learning-based sentiment analysis.
-Integration with live trading APIs for executing trades.
+1. Create a Supabase project.
+2. Run SQL in `supabase/schema.sql` in the Supabase SQL editor.
+3. Configure environment variables in `.env.local`:
+   ```bash
+   NEXT_PUBLIC_SUPABASE_URL=...
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+   SUPABASE_SERVICE_ROLE_KEY=...
+   ```
 
-Contact
-Created by Karan Kumar. Feel free to connect on LinkedIn or reach out via email at karan.kumar@rutgers.edu
+### Required env vars
 
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY` (used by server API routes)
+
+If these variables are missing, the app still runs using local fallback datasets (`mockDeals` and `mockSubmittedDeals`).
+
+## API Routes
+
+- `GET /api/deals`
+  - Returns published deals.
+  - Uses Supabase when configured; otherwise returns mock deals.
+- `GET /api/deals?scope=submissions&status=pending`
+  - Returns submitted deal queue for admin view.
+- `POST /api/submit-deal`
+  - Validates payload server-side and stores pending submissions.
+- `PATCH /api/admin/deals/[id]`
+  - Updates review status (`approved` / `rejected` / `pending`).
+
+## MVP Pages
+
+- `/` Home page with 21+ age gate, location search, and CTA
+- `/deals` Deals listing with filters and verified/pending status
+- `/dispensary/[slug]` Dispensary profile with active deals and compliance note
+- `/submit` Deal submission form using API route + client-side validation
+- `/admin` Admin review queue powered by API data and approve/reject actions
+
+## What is still mock/demo
+
+- Deal source links and distances are placeholders.
+- Admin auth/roles are not yet enforced (UI and API structure exists but no auth integration yet).
+- Submission moderation history/audit trail is not yet implemented.
+- Supabase data sync is optional until env vars are configured.
+
+## Compliance
+
+Footer disclaimer (shown globally):
+
+> NashBud is an informational deal-discovery platform. We do not sell cannabis, process orders, facilitate delivery, or provide medical advice. Users are responsible for following all New Jersey laws.
+
+## MVP Roadmap
+
+1. Supabase auth for admin reviewers and secure row-level policies.
+2. Verification workflow with source snapshot metadata.
+3. Geolocation search and real distance calculation.
+4. Notification/watchlist workflows for expiring deals.
+5. Analytics dashboard for dispensary partners.
